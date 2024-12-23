@@ -43,3 +43,16 @@ exports.loginUser = async (req, res) => {
     });
   }
 };
+
+exports.logoutUser = async (req, res) => {
+  try {
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      message: error.message,
+    });
+  }
+};
