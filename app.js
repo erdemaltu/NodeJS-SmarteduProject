@@ -23,7 +23,6 @@ mongoose
 app.set('view engine', 'ejs');
 
 //Global Variables
-
 global.userIN = null;
 
 //Middlewares
