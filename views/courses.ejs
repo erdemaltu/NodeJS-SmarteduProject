@@ -10,7 +10,18 @@
     <div id="overviews" class="section wb">
         <div class="container">
             <div class="row"> 
-                <div class="col-lg-9 blog-post-single">
+				<div class="col-lg-9 blog-post-single">
+					<% if (flashMessages) { %>
+						<% if(flashMessages.success) { %>
+							<div class="alert alert-success">
+								<%= flashMessages.success %>
+							</div>
+						<% } else if(flashMessages.error) { %>
+							<div class="alert alert-danger">
+								<%= flashMessages.error %>
+							</div>
+						<% } %>
+					<% } %>
 					<div class="row"> 
 						<% for (let course of courses) { %>
 							<div class="col-lg-6 col-md-6 col-12">
