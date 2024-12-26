@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 exports.getIndexPage = (req, res) => {
   console.log(req.session.userID);
   res.status(200).render('index', {
@@ -22,3 +24,48 @@ exports.getLoginPage = (req, res) => {
     page_name: 'login',
   });
 }
+
+exports.getContactPage = (req, res) => {
+  res.status(200).render('contact', {
+    page_name: 'contact',
+  });
+}
+
+exports.sendEmail = async (req, res) => {
+
+  const outputMessage = `
+  <h1>Message Details</h1>
+  <ul>
+    <li>Name: ${req.body.name}</li>
+    <li>Email: ${req.body.email}</li>
+  </ul>
+  <h1>Message</h1>
+  <p>${req.body.message}</p>
+  `;
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // true for port 465, false for other ports
+    auth: {
+      user: "eaayazilim@gmail.com",
+      pass: "qocakaczghuilotg",
+    },
+  });
+  
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"Smart EDU Contact Form 👻" <eaayazilim@gmail.com>', // sender address
+      to: "e-altug@hotmail.com", // list of receivers
+      subject: "Smart EDU Contact Form 👻 New Message", // Subject line
+      html: outputMessage, // html body
+    });
+  
+    console.log("Message sent: %s", info.messageId);
+
+    res.status(200).render('contact', {
+      page_name: 'contact',
+      message: 'Message sent successfully!',
+    });
+  
+};
