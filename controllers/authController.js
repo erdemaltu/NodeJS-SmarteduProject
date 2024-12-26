@@ -65,7 +65,7 @@ exports.getDashboardPage = async (req, res) => {
     'courses'
   );
   const categories = await Category.find();
-  const courses = await Courses.find({ user: req.session.userID });
+  const courses = await Courses.find({ user: req.session.userID }).populate('category');
   res.status(200).render('dashboard', {
     page_name: 'dashboard',
     user,
