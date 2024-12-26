@@ -66,10 +66,27 @@ exports.getDashboardPage = async (req, res) => {
   );
   const categories = await Category.find();
   const courses = await Courses.find({ user: req.session.userID }).populate('category');
+  const users = await User.find();
   res.status(200).render('dashboard', {
     page_name: 'dashboard',
     user,
     categories,
     courses,
+    users,
   });
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    await Courses.deleteMany({ user: user._id });
+    
+    req.flash("success", `${user.name} has been removed successfully`);
+    res.status(200).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      error,
+    });
+  }
 };
